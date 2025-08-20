@@ -1,7 +1,15 @@
 import React,{useState} from "react";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "../../https";
+import { Navigate, useNavigate } from "react-router-dom";
+import { enqueueSnackbar } from "notistack";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/userSlice";
+
 
 const Login = () => {
-    
+        const navigate = useNavigate();
+        const dispatch = useDispatch();
         const [formData, setFormData] = useState({
 
       email: "",      // email
@@ -20,8 +28,32 @@ const Login = () => {
     const handleSubmit = (e) => {
       e.preventDefault();
       console.log(formData); // Formdaki Türkçe alanlar buraya düşer
+      loginMutation.mutate(formData); // API çağrısı için form verilerini gönder
     };
     
+
+    const loginMutation = useMutation({
+      mutationFn: (reqData) => login(reqData),
+      onSuccess: (res) => {
+        const { data } = res;
+        console.log(data);
+
+        const { _id, name, email, phone, role } = data.data;
+        dispatch(setUser({ _id, name, email, phone, role }));
+
+        navigate("/"); // Başarılı giriş sonrası yönlendirme
+        // Burada başarılı giriş sonrası yapılacak işlemler
+      },
+      onError: (error) => {
+        const { response } = error;
+        enqueueSnackbar(response.data.message, {
+          variant: "error",
+        }); 
+        
+      }
+    });
+
+
   return (
     <div>
       <form onSubmit={handleSubmit}>

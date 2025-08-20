@@ -3,8 +3,13 @@ import{FaSearch} from "react-icons/fa"
 import { FaUserCircle } from 'react-icons/fa'
 import{FaBell}from "react-icons/fa"
 import logo from '../../assets/images/logo.png'
+import { useSelector } from 'react-redux'
 
-function Header() {
+
+const Header = () => {
+
+   const userData = useSelector(state=> state.user);
+
   return (
     //üst kısım logo kısmı 
     <header className="flex justify-between items-center py-4 px-8 bg-[#1f2937]">
@@ -32,8 +37,8 @@ function Header() {
         <div className="flex items-center gap-3 cursor-pointer">
           <FaUserCircle className="text-[#f5f5f5] text-2xl"  />
           <div className="flex flex-col items-start">
-            <h1 className="text-md text-[#f5f5f5]">Yöneticim</h1>
-            <p className="text-sm text-[#ababab] font-medium">Admin</p>
+            <h1 className="text-md text-[#f5f5f5]">{userData.name || "TEST kullanıcısı"}</h1>
+            <p className="text-sm text-[#ababab] font-medium">{userData.role || "rol"}</p>
           </div>
         </div>
 
