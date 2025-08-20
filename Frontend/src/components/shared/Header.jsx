@@ -17,7 +17,7 @@ function Header() {
       <div className="flex items-center gap-4 bg-cyan-950 p-2 rounded-[20px] px-5 py-2 w-[500px] ">
         <FaSearch className="text-[#f5f5f5]" />
         <input type="text" 
-         placeholder="Search "
+         placeholder="Arama "
          className="bg-transparent text-[#f5f5f5] outline-none" />
       </div>
 
@@ -32,7 +32,7 @@ function Header() {
         <div className="flex items-center gap-3 cursor-pointer">
           <FaUserCircle className="text-[#f5f5f5] text-2xl"  />
           <div className="flex flex-col items-start">
-            <h1 className="text-md text-[#f5f5f5]">Yönetici</h1>
+            <h1 className="text-md text-[#f5f5f5]">Yöneticim</h1>
             <p className="text-sm text-[#ababab] font-medium">Admin</p>
           </div>
         </div>

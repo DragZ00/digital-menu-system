@@ -1,13 +1,34 @@
-import baklava from '../assets/images/baklava.png'
 import adanaKebab from '../assets/images/adana-kebab.png'
-import lahmacun from '../assets/images/lahmacun.jpg'
-import patlicanKebab from '../assets/images/patlican-kebab.png'
+import ayran from '../assets/images/ayran.jpg'
+import baklava from '../assets/images/baklava.png'
 import beyti from '../assets/images/beyti.png'
-import pilavEt from '../assets/images/pilav-ustu-et.png'
-import tantuni from '../assets/images/tantuni.jpg'
-import pide from '../assets/images/pide.png'
-import sutlac from '../assets/images/sutlac.png'
+import borek from '../assets/images/borek.jpg'
+import cay from '../assets/images/cay.jpg'
+import cobanSalata from '../assets/images/cobanSalata.jpg'
+import dolma from '../assets/images/dolma.png'
 import etSis from '../assets/images/et-sis.png'
+import ezoGelin from '../assets/images/ezoGelin.jpg'
+import gavurdagiSalata from '../assets/images/gavurdagiSalata.jpg'
+import gazoz from '../assets/images/gazoz.png'
+import icliKofte from '../assets/images/iciliKofte.jpg'
+import kasarliPide from '../assets/images/kasarliPide.jpg'
+import kiymaliPide from '../assets/images/kiymaliPide.jpg'
+import kunefe from '../assets/images/kunefe.jpg'
+import lahmacun from '../assets/images/lahmacun.jpg'
+
+import mercimekCorba from '../assets/images/mercimekCorba.jpg'
+import mevsimSalata from '../assets/images/mevsimSalta.jpg'
+import patlicanKebab from '../assets/images/patlican-kebab.png'
+import pide from '../assets/images/pide.png'
+import pilavEt from '../assets/images/pilav-ustu-et.png'
+
+import salep from '../assets/images/salep.png'
+import salgam from '../assets/images/salgam.jpg'
+import sutlac from '../assets/images/sutlac.png'
+import tantuni from '../assets/images/tantuni.jpg'
+import tarhana from '../assets/images/tarhana.jpg'
+import turkKahvesi from '../assets/images/turkKahvesi.jpg'
+
 
 
 
@@ -92,74 +113,62 @@ export const popularDishes = [
   { id: 15, name: "Masa 15", status: "Rezerve", initials: "TO", seats: 3 },
 ];
 // Başlangıçlar
+// Başlangıçlar
+// Başlangıçlar
 export const baslangicYemek = [
-  { id: 1, name: "Sigara Böreği", price: 80, category: "Vejetaryen" },
-  { id: 2, name: "Zeytinyağlı Yaprak Sarma", price: 90, category: "Vejetaryen" },
-  { id: 3, name: "İçli Köfte", price: 120, category: "Etli" },
-  { id: 4, name: "Kısır", price: 70, category: "Vejetaryen" },
-  { id: 5, name: "Paçanga Böreği", price: 100, category: "Etli" },
-  { id: 6, name: "Humus", price: 75, category: "Vejetaryen" }
+  { id: 1, name: "Sigara Böreği", price: 80, category: "Vejetaryen", image: borek },
+  { id: 2, name: "Zeytinyağlı Yaprak Sarma", price: 90, category: "Vejetaryen", image: dolma },
+  { id: 3, name: "İçli Köfte", price: 120, category: "Etli", image: icliKofte }
 ];
 
 // Ana Yemekler
 export const anaYemek = [
-  { id: 1, name: "Adana Kebap", price: 250, category: "Etli" },
-  { id: 2, name: "Urfa Kebap", price: 240, category: "Etli" },
-  { id: 3, name: "Tavuk Şiş", price: 180, category: "Tavuk" },
-  { id: 4, name: "İskender Kebap", price: 280, category: "Etli" },
-  { id: 5, name: "Mantı", price: 150, category: "Hamur" },
-  { id: 6, name: "Etli Güveç", price: 220, category: "Etli" }
+  { id: 1, name: "Adana Kebap", price: 250, category: "Etli", image: adanaKebab },
+  { id: 2, name: "Beyti", price: 240, category: "Etli", image: beyti },
+  { id: 3, name: "Tavuk Şiş", price: 180, category: "Tavuk", image: etSis }
 ];
 
 // Soğuk İçecekler
 export const sogukIcecekler = [
-  { id: 1, name: "Ayran", price: 25, category: "Soğuk" },
-  { id: 2, name: "Şalgam", price: 30, category: "Soğuk" },
-  { id: 3, name: "Kola", price: 35, category: "Soğuk" },
-  { id: 4, name: "Fanta", price: 35, category: "Soğuk" },
-  { id: 5, name: "Soda", price: 20, category: "Soğuk" }
+  { id: 1, name: "Ayran", price: 25, category: "Soğuk", image: ayran },
+  { id: 2, name: "Şalgam", price: 30, category: "Soğuk", image: salgam },
+  { id: 3, name: "Gazoz", price: 35, category: "Soğuk", image: gazoz }
 ];
 
 // Çorbalar
 export const corba = [
-  { id: 1, name: "Mercimek Çorbası", price: 60, category: "Vejetaryen" },
-  { id: 2, name: "Ezogelin Çorbası", price: 65, category: "Vejetaryen" },
-  { id: 3, name: "Tarhana Çorbası", price: 70, category: "Vejetaryen" },
-  { id: 4, name: "Tavuk Suyu Çorbası", price: 80, category: "Tavuklu" },
-  { id: 5, name: "İşkembe Çorbası", price: 90, category: "Etli" }
+  { id: 1, name: "Mercimek Çorbası", price: 60, category: "Vejetaryen", image: mercimekCorba },
+  { id: 2, name: "Ezogelin Çorbası", price: 65, category: "Vejetaryen", image: ezoGelin  }, 
+  { id: 3, name: "Tarhana Çorbası", price: 70, category: "Vejetaryen", image: tarhana }
 ];
 
 // Tatlılar
 export const tatlılar = [
-  { id: 1, name: "Baklava", price: 120, category: "Şerbetli" },
-  { id: 2, name: "Künefe", price: 140, category: "Şerbetli" },
-  { id: 3, name: "Sütlaç", price: 100, category: "Sütlü" ,image: sutlac},
-  { id: 4, name: "Kazandibi", price: 110, category: "Sütlü" }
+  { id: 1, name: "Baklava", price: 120, category: "Şerbetli", image: baklava },
+  { id: 2, name: "Künefe", price: 140, category: "Şerbetli", image: kunefe },
+  { id: 3, name: "Sütlaç", price: 100, category: "Sütlü", image: sutlac }
 ];
 
-// pideler
+// Pideler
 export const pideler = [
-  { id: 1, name: "Kaşarlı Pide", price: 150, category: "Vejetaryen" },
-  { id: 2, name: "Kıymalı Pide", price: 170, category: "Etli" },
-  { id: 3, name: "Kuşbaşılı Pide", price: 180, category: "Etli" },
-  { id: 4, name: "Karışık Pide", price: 190, category: "Etli" }
+  { id: 1, name: "Kaşarlı Pide", price: 150, category: "Vejetaryen", image: kasarliPide },
+  { id: 2, name: "Kıymalı Pide", price: 170, category: "Etli", image: kiymaliPide },
+  { id: 3, name: "Kuşbaşılı Pide", price: 180, category: "Etli", image: pide }
 ];
 
 // Sıcak İçecekler
 export const sicakIcecek = [
-  { id: 1, name: "Çay", price: 15, category: "Sıcak" },
-  { id: 2, name: "Türk Kahvesi", price: 30, category: "Sıcak" },
-  { id: 3, name: "Salep", price: 40, category: "Sıcak" }
+  { id: 1, name: "Çay", price: 15, category: "Sıcak", image: cay },
+  { id: 2, name: "Türk Kahvesi", price: 30, category: "Sıcak", image: turkKahvesi },
+  { id: 3, name: "Salep", price: 40, category: "Sıcak", image: salep }
 ];
 
 // Salatalar
 export const salatalar = [
-  { id: 1, name: "Çoban Salata", price: 60, category: "Vejetaryen" },
-  { id: 2, name: "Mevsim Salata", price: 55, category: "Vejetaryen" },
-  { id: 3, name: "Gavurdağı Salatası", price: 70, category: "Vejetaryen" },
-  { id: 4, name: "Yoğurtlu Semizotu Salatası", price: 65, category: "Vejetaryen" }
+  { id: 1, name: "Çoban Salata", price: 60, category: "Vejetaryen", image: cobanSalata },
+  { id: 2, name: "Mevsim Salata", price: 55, category: "Vejetaryen", image: mevsimSalata },
+  { id: 3, name: "Gavurdağı Salatası", price: 70, category: "Vejetaryen", image: gavurdagiSalata }
 ];
-
 
   export const menus = [
   { id: 1, name: "Başlangıç", bgColor: "#b73e3e" ,icon: "🍲", items: baslangicYemek },
