@@ -1,25 +1,36 @@
-import React from 'react'
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { formatDate, getAvatarName } from "../../utils";
 
 const CustomerInfo = () => {
+  const [dateTime] = useState(new Date());
+  const customerData = useSelector((state) => state.customer);
+
   return (
-    <div className="flex items-center justify-between px-4 py-3">
-  <div className="flex flex-col items-start">
-    <h1 className="text-md text-[#f5f5f5] font-semibold tracking-wide">
-      Müşteri Adı
-    </h1>
-    <p className="text-xs text-[#ababab] font-medium mt-1">
-      #101 / Restoranda
-    </p>
-    <p className="text-xs text-[#ababab] font-medium mt-2">
-      19 Ocak 2025 17:34
-    </p>
-  </div>
+    // iki uca yay + yukarı hizala
+    <div className="flex justify-between items-start px-4 py-3 w-full">
+      {/* SOL: bilgiler */}
+      <div className="flex flex-col">
+        <h1 className="text-md text-[#f5f5f5] font-semibold tracking-wide">
+          {customerData.customerName || "Musteri ismi"}
+        </h1>
+        <p className="text-xs text-[#ababab] font-medium mt-1">
+          {customerData.orderId || "N/A"} / Restoranda
+        </p>
+        <p className="text-xs text-[#ababab] font-medium mt-2">
+          {formatDate(dateTime)}
+        </p>
+      </div>
 
-  <button className="bg-[#f6b100] p-3 text-xl font-bold rounded-lg">
-    MA
-  </button>
-</div>
-  )
-}
+      {/* SAĞ: avatar */}
+      <button
+        className="bg-[#f6b100] w-12 h-12 rounded-lg text-black text-xl font-bold grid place-items-center self-start"
+        title={customerData.customerName || "Müşteri"}
+      >
+        {getAvatarName(customerData.customerName) || "CN"}
+      </button>
+    </div>
+  );
+};
 
-export default CustomerInfo
+export default CustomerInfo;

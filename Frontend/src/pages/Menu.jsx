@@ -5,7 +5,15 @@ import BackButton from "../components/shared/BackButton";
 import { MdRestaurantMenu } from "react-icons/md";
 import MenuContainer from "../components/menu/MenuContainer";
 
+import CustomerInfo from "../components/menu/CustomerInfo";
+import CartInfo from "../components/menu/CartInfo";
+import Bill from "../components/menu/Bill";
+import { useSelector } from "react-redux";
+
+
+
 const Menu = () => {
+  const customerData = useSelector((state) => state.customer);
   return (
     <section className="bg-[#1f1f1f] h-[calc(100vh-5rem)] overflow-hidden flex gap-3">
       {/* Sol alan */}
@@ -24,12 +32,12 @@ const Menu = () => {
           <div className="flex items-center gap-3 cursor-default">
             <MdRestaurantMenu className="text-[#f5f5f5] text-3xl" />
             <div className="flex flex-col">
-              <span className="text-sm text-[#f5f5f5] font-semibold leading-4">
-                Müşteri Adı
-              </span>
-              <span className="text-xs text-[#ababab] leading-4">
-                Masa No: 2
-              </span>
+              <h1 className="text-sm text-[#f5f5f5] font-semibold leading-4">
+                {customerData.customerName || "Musteri ismi"}
+              </h1>
+              <h1 className="text-xs text-[#ababab] leading-4">
+                {customerData.tableNo || "N/A"} 
+              </h1>
             </div>
           </div>
         </div>
@@ -39,7 +47,20 @@ const Menu = () => {
       </div>
 
       {/* Sağ alan (sipariş/özet paneli) */}
-      <div className="flex-[2] bg-[#2b5cff] rounded-l-2xl" />
+      <div className="flex-[1] bg-[#1e1e2f] mt-4 mr-3 h-[780px] rounded-lg pt-2" > 
+  {/* Müşteri Bilgisi */}
+  <CustomerInfo/>
+
+<hr className="border-[#2a2a2a] border-t-2" />
+{/* Cart Items */}
+
+ <CartInfo/>
+<hr className="border-[#2a2a2a] border-t-2" />
+<Bill/>
+
+</div>
+
+      
 
       <BottomNav />
     </section>
