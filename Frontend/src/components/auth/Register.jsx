@@ -1,29 +1,85 @@
 import React, { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { register } from "../../https";
+import { useSnackbar } from "notistack";
+import { enqueueSnackbar } from "notistack";
 
-const Register = () => {
+
+
+const Register = ({setIsRegister}) => {
+  const { enqueueSnackbar } = useSnackbar();
 
   const [formData, setFormData] = useState({
-    name: "",         // name
-    email: "",      // email
-    phone: "",    // phone
-    password: "",      // password
-    role: ""         // role
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    role: ""
   });
 
+  // input değişikliklerini yönetir
   const handleChange = (e) => {
+    const value =
+      e.target.name === "phone"
+        ? e.target.value.replace(/\D/g, "") // sadece rakamları al
+        : e.target.value;
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: value
     });
   };
 
+  // role seçim butonları
   const handleRoleSelection = (selectedRole) => {
     setFormData({ ...formData, role: selectedRole });
   };
 
+  // mutation tanımı
+  const registerMutation = useMutation({
+    mutationFn: (reqData) => register({
+      ...reqData,
+      phone: Number(reqData.phone) // backend number olarak bekliyor
+    }),
+    onSuccess: (res) => {
+      enqueueSnackbar("Kayıt başarılı!", { variant: "success" });
+      console.log("✅ Kayıt:", res.data);
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        password: "",
+        role: ""
+      });
+
+    setTimeout(() => {
+        setIsRegister(false); // kayıt başarılıysa giriş sayfasına yönlendir
+      },1500)
+
+
+    },
+    onError: (error) => {
+      const msg =
+        error?.response?.data?.message ||
+        "Kayıt sırasında bir hata oluştu!";
+      enqueueSnackbar(msg, { variant: "error" });
+      console.error("❌ Hata:", error);
+    }
+  });
+
+  // form submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData); // Formdaki Türkçe alanlar buraya düşer
+
+    // phone validation (10 haneli)
+    if (formData.phone.length !== 10) {
+      enqueueSnackbar("Telefon numarası 10 haneli olmalıdır!", {
+        variant: "error"
+      });
+      return;
+    }
+
+    registerMutation.mutate(formData);
   };
 
   return (
@@ -34,7 +90,7 @@ const Register = () => {
           <label className="block text-[#ababab] mb-2 text-sm font-medium">
             Çalışan Adı
           </label>
-          <div className="flex item-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
+          <div className="flex items-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
             <input
               type="text"
               name="name"
@@ -47,12 +103,12 @@ const Register = () => {
           </div>
         </div>
 
-        {/* Çalışan E-posta */}
+        {/* E-posta */}
         <div>
           <label className="block text-[#ababab] mb-2 mt-3 text-sm font-medium">
             Çalışan E-posta
           </label>
-          <div className="flex item-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
+          <div className="flex items-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
             <input
               type="email"
               name="email"
@@ -65,18 +121,18 @@ const Register = () => {
           </div>
         </div>
 
-        {/* Çalışan Telefon */}
+        {/* Telefon */}
         <div>
           <label className="block text-[#ababab] mb-2 mt-3 text-sm font-medium">
             Çalışan Telefon
           </label>
-          <div className="flex item-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
+          <div className="flex items-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
             <input
               type="text"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="Çalışan telefonunu giriniz"
+              placeholder="Örn: 5321234567"
               className="bg-transparent flex-1 text-white focus:outline-none"
               required
             />
@@ -88,7 +144,7 @@ const Register = () => {
           <label className="block text-[#ababab] mb-2 mt-3 text-sm font-medium">
             Şifre
           </label>
-          <div className="flex item-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
+          <div className="flex items-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
             <input
               type="password"
               name="password"
@@ -106,20 +162,19 @@ const Register = () => {
           <label className="block text-[#ababab] mb-2 mt-3 text-sm font-medium">
             Rolünüzü Seçin
           </label>
-          <div className="flex item-center gap-3 mt-4">
-            {["Garson", "Kasiyer", "Yönetici"].map((role) => {
-              return (
-                <button
-                  key={role}
-                  type="button"
-                  onClick={() => handleRoleSelection(role)}
-                  className={`bg-[#1f1f1f] px-4 py-3 w-full rounded-lg text-[#ababab] 
-                  ${formData.role === role ? "bg-indigo-700 text-white" : ""}`}
-                >
-                  {role}
-                </button>
-              );
-            })}
+          <div className="flex items-center gap-3 mt-4">
+            {["Garson", "Kasiyer", "Yönetici"].map((role) => (
+              <button
+                key={role}
+                type="button"
+                onClick={() => handleRoleSelection(role)}
+                className={`bg-[#1f1f1f] px-4 py-3 w-full rounded-lg text-[#ababab] ${
+                  formData.role === role ? "bg-indigo-700 text-white" : ""
+                }`}
+              >
+                {role}
+              </button>
+            ))}
           </div>
         </div>
 

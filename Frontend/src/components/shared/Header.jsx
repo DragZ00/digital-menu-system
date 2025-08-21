@@ -4,11 +4,36 @@ import { FaUserCircle } from 'react-icons/fa'
 import{FaBell}from "react-icons/fa"
 import logo from '../../assets/images/logo.png'
 import { useSelector } from 'react-redux'
+import { IoLogOutOutline } from 'react-icons/io5';
+import { useMutation } from '@tanstack/react-query';
+import { logout } from '../../https';
+import { removeUser } from '../../redux/slices/userSlice';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 
 const Header = () => {
 
    const userData = useSelector(state=> state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+
+   const logoutMutation = useMutation({
+    mutationFn: () => logout (),
+    onSuccess: (data) => {
+      console.log(data);
+      dispatch(removeUser());
+      navigate ("/auth"); 
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+
+   });
+   const handleLogout = async () => {
+  logoutMutation.mutate();
+   }
 
   return (
     //üst kısım logo kısmı 
@@ -40,6 +65,7 @@ const Header = () => {
             <h1 className="text-md text-[#f5f5f5]">{userData.name || "TEST kullanıcısı"}</h1>
             <p className="text-sm text-[#ababab] font-medium">{userData.role || "rol"}</p>
           </div>
+          <IoLogOutOutline onClick={handleLogout} className="text-[#f5f5f5] ml-2" size={40} />
         </div>
 
       </div>

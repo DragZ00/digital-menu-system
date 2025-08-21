@@ -51,7 +51,7 @@ const Auth = () => {
     {isRegister ? "Çalışan Kaydı" : "Çalışan Girişi"}
   </h2>
   {/* Bileşenler */}
-  {isRegister ? <Register /> : <Login />}
+  {isRegister ? <Register setIsRegister={setIsRegister} /> : <Login />}
 
 
  <div className="flex justify-center mt-6">

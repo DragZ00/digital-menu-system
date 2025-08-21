@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
-function Greetings() {
+const Greetings = () => {
+const userData = useSelector((state) => state.user);
+
   const [dateTime, setDateTime] = useState(new Date());
 
   // Her saniye tarihi güncelle
@@ -27,7 +30,7 @@ function Greetings() {
       {/* Sol taraf */}
       <div>
         <h1 className="text-[#f5f5f5] text-2xl font-semibold">
-          İyi Günler, Yönetici
+          İyi Günler, {userData.name || "Kullanıcı"}! 👋
         </h1>
         <p className="text-[#ababab] text-sm">
           Müşterilerimize en iyi hizmeti sunun 😊
