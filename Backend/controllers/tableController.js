@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const addTable = async (req, res, next) => {
  try {
 
-    const { tableNo} = req.body;
+    const { tableNo, seats} = req.body;
     if(!tableNo){
         const error = createHttpError(400, "Masa numarası gerekli!");
         return next(error);
@@ -18,7 +18,7 @@ if(isTablePresent) {
     
  }
 
- const newTable = new Table({tableNo});
+ const newTable = new Table({tableNo, seats});
     await newTable.save();
 
     res.status(201).json({
@@ -34,7 +34,10 @@ if(isTablePresent) {
 const getTables = async (req, res, next) => {
         try {
 
-        const tables = await Table.find();
+        const tables = await Table.find().populate({
+            path: "currentOrder",
+            select: "customerDetails"
+        });
         res.status(200).json({
             success: true,
             data: tables

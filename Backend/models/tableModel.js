@@ -5,10 +5,15 @@ const tableSchema = new mongoose.Schema({
         required: true,
         uniqe: true
     },
+status: {
+    type: String,
+    default: "uygun",
+},
 
-    status: {
-        type: String,
-        default: "uygun",
+
+    seats: {
+        type: Number,
+        required: true
     },
 
     currentOrder:{
