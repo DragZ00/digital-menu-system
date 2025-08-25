@@ -82,10 +82,26 @@ const updateTables = async (req, res, next) => {
         next(error);
     }
 
-}
+};
+const deleteTable = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return next(createHttpError(400, "Geçersiz masa ID"));
+    }
+
+    const deleted = await Table.findByIdAndDelete(id);
+    if (!deleted) return next(createHttpError(404, "Masa bulunamadı"));
+
+    res.status(200).json({ success: true, message: "Masa silindi" });
+  } catch (err) {
+    next(err);
+  }
+};
 
 module.exports = {
     addTable,               
     getTables,
-    updateTables
+    updateTables,
+    deleteTable
 };
