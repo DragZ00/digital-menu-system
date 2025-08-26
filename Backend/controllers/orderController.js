@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const createHttpError = require("http-errors");
 const Order = require("../models/orderModel");
 
-// UI -> backend status eşlemeleri (TR de gelebilir)
+// UI -> backend durum eşlemesi
 const mapToBackend = (raw = "") => {
   const v = String(raw).toLowerCase();
   if (["hazır", "ready"].includes(v)) return "ready";
@@ -13,13 +13,14 @@ const mapToBackend = (raw = "") => {
 
 const addOrder = async (req, res, next) => {
   try {
-    // İstersen burada payload doğrulama/normalize yapabilirsin
+    // payload doğrudan şemaya uyumlu olacak şekilde bekleniyor
     const order = new Order(req.body);
     await order.save();
 
-    // Masa no’yu hemen görmek istersen populate edip döndürelim
+    // Masa No ve yemek isimlerini dönerken gösterelim
     const saved = await Order.findById(order._id)
-      .populate({ path: "table", select: "tableNo" });
+      .populate({ path: "table", select: "tableNo" })
+      .populate({ path: "orderItems.dish", select: "name price" });
 
     res.status(201).json({
       success: true,
@@ -40,16 +41,14 @@ const getOrderById = async (req, res, next) => {
     }
 
     const order = await Order.findById(id)
-      .populate({ path: "table", select: "tableNo" });
+      .populate({ path: "table", select: "tableNo" })
+      .populate({ path: "orderItems.dish", select: "name price" });
 
     if (!order) {
       return next(createHttpError(404, "Sipariş bulunamadı!"));
     }
 
-    res.status(200).json({
-      success: true,
-      data: order,
-    });
+    res.status(200).json({ success: true, data: order });
   } catch (error) {
     next(error);
   }
@@ -58,20 +57,18 @@ const getOrderById = async (req, res, next) => {
 const getOrders = async (req, res, next) => {
   try {
     const q = {};
-    // ?status=... desteği (hem TR hem EN kabul)
+    // ?status=... ile filtre (TR/EN)
     if (req.query.status) {
       const s = mapToBackend(req.query.status);
       if (s) q.orderStatus = s;
     }
 
     const orders = await Order.find(q)
-      .populate({ path: "table", select: "tableNo" }) // ✅ Masa No
-      .sort({ createdAt: -1 });                      // ✅ En yeniler üstte
+      .populate({ path: "table", select: "tableNo" })
+      .populate({ path: "orderItems.dish", select: "name price" })
+      .sort({ createdAt: -1 });
 
-    res.status(200).json({
-      success: true,
-      data: orders,
-    });
+    res.status(200).json({ success: true, data: orders });
   } catch (error) {
     next(error);
   }
@@ -85,21 +82,22 @@ const updateOrder = async (req, res, next) => {
       return next(createHttpError(404, "Sipariş ID'si hatalı!"));
     }
 
-    // Yalnızca status güncelliyorsan:
-    let update = {};
+    // Güvenli alan güncellemesi
+    const update = {};
+
     if (typeof req.body.orderStatus !== "undefined") {
       const normalized = mapToBackend(req.body.orderStatus) || req.body.orderStatus;
       update.orderStatus = normalized;
     }
 
-    // İstersen diğer alanları da esnek bırak:
-    const allowed = ["bills", "customerDetails", "note"];
+    const allowed = ["bills", "customerDetails", "note", "orderItems", "table"];
     for (const k of allowed) {
       if (typeof req.body[k] !== "undefined") update[k] = req.body[k];
     }
 
     const order = await Order.findByIdAndUpdate(id, update, { new: true })
-      .populate({ path: "table", select: "tableNo" });
+      .populate({ path: "table", select: "tableNo" })
+      .populate({ path: "orderItems.dish", select: "name price" });
 
     if (!order) {
       return next(createHttpError(404, "Sipariş bulunamadı!"));
@@ -114,12 +112,15 @@ const updateOrder = async (req, res, next) => {
     next(error);
   }
 };
+
 const deleteOrder = async (req, res, next) => {
   try {
     const { id } = req.params;
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return next(createHttpError(404, "Sipariş ID'si hatalı!"));
     }
+
     const deleted = await Order.findByIdAndDelete(id);
     if (!deleted) return next(createHttpError(404, "Sipariş bulunamadı!"));
 
@@ -129,11 +130,10 @@ const deleteOrder = async (req, res, next) => {
   }
 };
 
-
 module.exports = {
   addOrder,
   getOrderById,
   getOrders,
   updateOrder,
-  deleteOrder
+  deleteOrder,
 };

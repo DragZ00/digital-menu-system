@@ -10,6 +10,8 @@ const app = express();
 const dishRoute = require("./routes/dishRoute");
 const categoryRoute = require("./routes/categoryRoute");
 
+
+
 const PORT = config.PORT; 
 connectDB();
 
@@ -40,3 +42,6 @@ app.listen(PORT, () => {
 
     const orderRoute = require("./routes/orderRoute");
 app.use("/api/order", orderRoute);
+
+
+
