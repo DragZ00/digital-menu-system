@@ -29,7 +29,8 @@ const customerSlice = createSlice({
         },
 
         updateTable: (state, action) => {
-            state.table = action.payload.table;
+           if (action.payload.tableId !== undefined) state.tableId = action.payload.tableId;
+  if (action.payload.table !== undefined)   state.table   = action.payload.table;
         }
 
     }

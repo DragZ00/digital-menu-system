@@ -1,34 +1,36 @@
-import React from "react"
-import { useNavigate } from 'react-router-dom';
-import { getAvatarName, getBgColor } from '../../utils';
+// src/components/tables/TableCard.jsx
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { getAvatarName, getBgColor } from "../../utils";
 import { useDispatch } from "react-redux";
-import { updateTable } from '../../redux/slices/customerSlice';
+import { updateTable } from "../../redux/slices/customerSlice";
 import { FaLongArrowAltRight } from "react-icons/fa";
 
-const TableCard = ({ name, status, initials, seats }) => {
+const TableCard = ({ tableId, name, status, initials, seats }) => { // ✅ tableId eklendi
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleClick = (name) => {
-    if (status.toLowerCase() === "meşgul") return; // ✅ Meşgul olunca tıklanamaz
-    dispatch(updateTable({ tableNo: name }));
+  const isBusy = (typeof status === "string") && status.toLowerCase() === "meşgul";
+
+  const handleClick = () => {
+    if (isBusy) return;
+    // ✅ Hem id (Mongo _id) hem görünen masa numarası
+    dispatch(updateTable({ tableId, table: name }));
     navigate("/menu");
   };
 
   return (
     <div
-      onClick={() => handleClick(name)}
-      className="w-[300px] hover:bg-[#2c2c2c] bg-[#1e1e2f] p-4 rounded-lg mb-4 cursor-pointer"
+      onClick={handleClick}
+      className={`w-[300px] bg-[#1e1e2f] p-4 rounded-lg mb-4 cursor-pointer hover:bg-[#2c2c2c] ${
+        isBusy ? "opacity-80" : ""
+      }`}
     >
       <div className="flex items-center justify-between px-1">
-        <h1 className="text-white text-xl font-semibold">Masa 
-          <FaLongArrowAltRight className="text-[#ababab] ml-2 inline"/> {name}</h1>
-        <p
-          className={`px-2 py-1 rounded-lg font-semibold
-            ${status.toLowerCase() === "uygun" ? "bg-green-600 text-white" : ""}
-            ${status.toLowerCase() === "meşgul" ? "bg-red-600 text-white" : ""}
-          `}
-        >
+        <h1 className="text-white text-xl font-semibold">
+          Masa <FaLongArrowAltRight className="text-[#ababab] ml-2 inline" /> {name}
+        </h1>
+        <p className={`px-2 py-1 rounded-lg font-semibold ${!isBusy ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}>
           {status}
         </p>
       </div>
@@ -36,9 +38,9 @@ const TableCard = ({ name, status, initials, seats }) => {
       <div className="flex items-center justify-center mt-5 mb-10">
         <h1
           className="text-white rounded-full p-5 text-xl"
-          style={{ backgroundColor:initials ? getBgColor() : "#1f1f1f"}}
+          style={{ backgroundColor: initials ? getBgColor() : "#1f1f1f" }}
         >
-          {getAvatarName(initials)|| "N/A"}
+          {getAvatarName(initials) || "N/A"}
         </h1>
       </div>
 
