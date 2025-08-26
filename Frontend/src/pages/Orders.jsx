@@ -137,6 +137,7 @@ const Orders = () => {
               dateText={fmtDate(o?.createdAt)}
               itemsCount={o?.orderItems?.length || 0}
               total={o?.bills?.totalwithtax ?? o?.bills?.total ?? 0}
+              items={o?.orderItems || o?.items || []}
               pending={mutation.isLoading && mutation.variables?.id === o._id}
               deleting={deleteMut.isLoading && deleteMut.variables === o._id}
             />
